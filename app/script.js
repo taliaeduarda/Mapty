@@ -1,7 +1,5 @@
 "use strict";
 
-// prettier-ignore
-const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 const form = document.querySelector(".form");
 const containerWorkouts = document.querySelector(".workouts");
@@ -19,6 +17,13 @@ class Workout {
     this.coords = coords;
     this.distance = distance;
     this.duration = duration;
+  }
+
+  _setDescription() {
+    // prettier-ignore
+const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+  this.description = `${this.type[0].toUpperCase()}${this.type.slice(1)} on ${this.date.getMonth()}`
   }
 }
 
@@ -155,16 +160,17 @@ class App {
     console.log(this.#workouts);
 
     // Render workout on map as marker
-    this.renderWorkoutMarker(workout);
+    this._renderWorkoutMarker(workout);
 
     // Render workout on list
+    this._renderWorkout(workout)
 
     // Hide form + clear input fields
     inputDistance.value = inputDuration.value = inputDuration.value = inputElevation.value =
       "";
   }
 
-  renderWorkoutMarker(workout) {
+  _renderWorkoutMarker(workout) {
     L.marker(workout.coords)
       .addTo(this.#map)
       .bindPopup(
@@ -178,6 +184,23 @@ class App {
       )
       .setPopupContent("workout")
       .openPopup();
+  }
+
+  _renderWorkout(workout) {
+    const html = `
+       <li class="workout workout--${workout.type}" data-id="${workout.id}">
+          <h2 class="workout__title">Running on April 14</h2>
+          <div class="workout__details">
+            <span class="workout__icon">${workout.type === 'running' ? '🏃‍♂️' : '🚴‍♀️'}</span>
+            <span class="workout__value"${workout.distance}</span>
+            <span class="workout__unit">km</span>
+          </div>
+          <div class="workout__details">
+            <span class="workout__icon">⏱</span>
+            <span class="workout__value">${workout.duration}</span>
+            <span class="workout__unit">min</span>
+          </div>
+          `
   }
 }
 
