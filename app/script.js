@@ -8,7 +8,52 @@ const inputDuration = document.querySelector(".form__input--duration");
 const inputCadence = document.querySelector(".form__input--cadence");
 const inputElevation = document.querySelector(".form__input--elevation");
 
-// blueprint
+class Workout {
+  date = new Date() // cutting edge JS
+  id = (Date.now() + '').slice(-10) // improvs no id
+
+  constructor(coords, distance, duration) {
+
+    this.coords = coords // [lat, lng]
+    this.distance = distance // em km
+    this.duration = duration // em mnts
+  }
+}
+
+class Running extends Workout {
+  constructor(coords, distance, duration, cadence) { // exclusivo de running
+    super(coords, distance, duration) // comuns a classe pai
+    this.cadence = cadence
+    this.calcPace()
+  }
+  calcPace() {
+    // min/km
+    this.pace = this.duration / this.distance
+    return this.pace
+  }
+}
+
+class Cycling extends Workout {
+  constructor(coords, distance, duration, elevatonGain) { // exclusivo
+    super(coords, distance, duration) // comuns a classe pai
+    this.elevatonGain = elevatonGain
+    this.calcSpeed()
+  }
+
+  calcSpeed() {
+    // km/h
+    this.speed = this.distance / (this.duration / 60)
+    return this.speed
+  }
+}
+
+// test
+const run1 = new Running([39, -12], 5.2, 24, 178)
+const cycling1 = new Cycling([39, -12], 27, 95, 523)
+console.log(cycling1)
+console.log(run1)
+
+// BLUEPRINT
 class App {
   // private instance properties
   #map;
