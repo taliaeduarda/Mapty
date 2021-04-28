@@ -12,10 +12,9 @@ const inputElevation = document.querySelector(".form__input--elevation");
 class App {
   // private instance properties
   #map;
-  #mapEvent; // proprs que vão estar presentes em todos os objs criados a partir da cçasse
+  #mapEvent; // props que vão estar presentes em todos os objs criados a partir da classe
 
   constructor() {
-    // constructor é chamado imediatamente assim que um novo objeto for criado a partir dessa classe
     // garantindo que o metodo vai ser chamado assim que a aplicação carregar
     this._getPosition();
 
@@ -55,13 +54,13 @@ class App {
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(this.#map);
 
-    // lidando com o clique do usuário no mapa, esse metodo map faz parte do leaflet
+    // lidando com o clique do usuário no mapa, o metodo map faz parte do leaflet
     this.#map.on("click", this._showForm.bind(this));
   }
 
   _showForm(mapE) {
     this.#mapEvent = mapE;
-    // Mostrar o form assim que o user clicar no mapa
+    // Mostrar o form assim que o user clica no mapa
     form.classList.remove("hidden");
 
     // Automaticamente foca no input distance
@@ -76,9 +75,9 @@ class App {
   _newWorkout(e) {
     e.preventDefault();
 
-    // limpar o valor inserido no campo de input
+    // limpa o valor inserido no campo de input
     inputDistance.value = inputDuration.value = inputCadence.value = "";
-    // display marker
+    // mostra o marcador
     const { lat, lng } = this.#mapEvent.latlng;
 
     // parte do codigo que cria o marcador
