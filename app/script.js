@@ -47,11 +47,11 @@ class Cycling extends Workout {
   }
 }
 
-// test
-const run1 = new Running([39, -12], 5.2, 24, 178)
-const cycling1 = new Cycling([39, -12], 27, 95, 523)
-console.log(cycling1)
-console.log(run1)
+// // test
+// const run1 = new Running([39, -12], 5.2, 24, 178)
+// const cycling1 = new Cycling([39, -12], 27, 95, 523)
+// console.log(cycling1)
+// console.log(run1)
 
 // BLUEPRINT
 class App {
@@ -118,12 +118,49 @@ class App {
   }
 
   _newWorkout(e) {
+    const validInputs = (...inputs) => 
+    inputs.every(inp => Number.isFinite(inp))
+
+    const allPositive = (...inputs) => inputs.every(inp => inp > 0)
+
     e.preventDefault();
+
+    // Capturando os dados do form
+    const type = inputType.value
+    const distance = +inputDistance.value
+    const duration = +inputDuration.value
+    const { lat, lng } = this.#mapEvent.latlng;
+
+    // Se for corrida, criar um objeto running
+    if (type === 'running'){
+      const cadence = +inputCadence.value
+      // Chechando se os dados são válidos
+      if(
+        !validInputs(distance, duration, cadence) ||
+        !allPositive(distance, duration, cadence)
+        )
+      return alert('Inputs have to be positive numbers!')
+
+      const workout = new Running([lat, lng], distance, duration, cadence)
+    }
+
+
+    // Se for bike, criar um objeto cycling
+    if (type === 'cycling'){
+      const elevation = +inputElevation.value
+
+      if (
+        !validInputs(distance, duration, elevation) ||
+        !allPositive(distance, duration) // elevation pode ser negativa
+      )
+      return alert('Inputs have to be positive numbers!')
+    }
+
+    // Adicionar novo objeto criado a array workout
 
     // limpa o valor inserido no campo de input
     inputDistance.value = inputDuration.value = inputCadence.value = "";
     // mostra o marcador
-    const { lat, lng } = this.#mapEvent.latlng;
 
     // parte do codigo que cria o marcador
     // lat e leng são retornados do objeto que o clique no mapa cria
